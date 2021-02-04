@@ -6,6 +6,7 @@ from easyhid import Enumeration
 from time import sleep
 import signal
 import sys
+import random
 breakCount = 17
 fontPath = "cour.ttf"
 
@@ -98,10 +99,10 @@ def getPeriod():
         if (hour == 13 and minute <=56):
             return(4)
 
-    if (hour >= 13 and minute >= 57):
+    if (hour >= 13):
         return(5)
 
-    if (hour <= 8 and minute <= 31):
+    if (hour <= 8):
         return (0)
 
 
@@ -113,6 +114,11 @@ def brk(txt, n):
             output = output + "\n"
     return output
 
+
+def choose ():
+    choices = ["/", "-", "_"]
+    return random.choice(choices)
+
 # call this every minute
 def getClassInfo():
     day = getDay()
@@ -120,22 +126,37 @@ def getClassInfo():
         period = getPeriod()
 
         if (period == 0):
-            return("Your first class is " + evenSchedule[0])
+            txt = "Your first class is " + evenSchedule[0]  + ". " +  getStatus(period)
+            txt = choose()+txt
+            txt = brk(txt, breakCount)
+            return(txt)
         if (period == 5):
-            return("School is over! Your first class tomorrow is " + oddSchedule[0])
+            txt = "School is over! Your first class tomorrow is " + oddSchedule[0]
+            txt = choose()+txt
+            txt = brk(txt, breakCount)
+            return txt
         else:
-            txt = "The current class is " +  evenSchedule[period-1] +  ". " + getStatus(period)
+            print(day)
+            txt = "The current class is " +  evenSchedule[period-1 ] +  ". " + getStatus(period)
+            txt = choose()+txt
             txt = brk(txt, breakCount)
             return(txt)
 
     if day == "ODD Day":
-
+        period = getPeriod()
         if (period == 0):
-            return("Your first class is " + oddSchedule[0])
+            txt = "Your first class is " + oddSchedule[0] + ". " + getStatus(period)
+            txt = choose()+txt
+            txt = brk(txt, breakCount)
+            return(txt)
         if (period == 5):
-            return("School is over! Your first class tomorrow is " + evenSchedule[0])
+            txt = "School is over! Your first class tomorrow is " + evenSchedule[0]
+            txt = choose()+txt
+            txt = brk(txt, breakCount)
+            return txt
         else:
             txt = "The current class is " +  oddSchedule[period-1] + ". " + getStatus(period)
+            txt = choose()+txt
             txt = brk(txt, breakCount)
             return(txt)
 
@@ -202,6 +223,6 @@ while(1):
         # Set up feature report package
         data = bytearray([0x61]) + data + bytearray([0x00])
         dev.send_feature_report(data)
-        sleep(30)
+        sleep(1) #should be 30
 
 dev.close()
