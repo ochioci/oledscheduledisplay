@@ -10,3 +10,6 @@ Installation:
 
 Note: 
 -This program is designed to run on a SteelSeries Apex 7. It should techincally work on any screen with some modifications though. 
+
+
+Disclaimer: I did not write the code to interface with the OLED itself. This was used https://github.com/edbgon/steelseries-oled/blob/master/oled.py. 
